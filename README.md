@@ -1,7 +1,6 @@
 # recon
-shell script recon for bug bounty;
-
-getjs
-gau
-https://jldc.me/anubis/subdomains/$1
-httpx
+shell script recon for bug bounty; <br>
+getjs <br>
+gau <br>
+https://jldc.me/anubis/subdomains/$1 <br>
+httpx <br>
