@@ -1,5 +1,5 @@
 # recon
-[ ! ] gau ta com problema não executa <br>
+[ ! ] gau ta com problema não executa, sem output nos arquivos .txt <br>
 [V] gospider funcionando lindamente <br>
 [V] findomain funcionando lindamente <br> <br>
 shell script recon for bug bounty; <br>
