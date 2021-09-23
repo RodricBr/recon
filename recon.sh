@@ -59,7 +59,7 @@ else
   elif [ "${*: -1}" '==' "F" ]; then
     check_f
     # Listagem de subdomínios usando findomain-linux
-    findomain-linux --quiet --target https://"$1" | echo -e "URL: $1 - Status: $RESP" >> reconlogs/"$1"-findomain-subs.txt | anew >> reconlogs/"$1"-findomain-subs.txt #https://"$1" >> reconlogs/"$1"-findomain-subs.txt
+    CMD_='findomain-linux --quiet --target https://"$1"' | echo -e "URL: $CMD_ - Status: $RESP" &>/dev/null >> reconlogs/"$1"-findomain-subs.txt | anew >> reconlogs/"$1"-findomain-subs.txt #https://"$1" >> reconlogs/"$1"-findomain-subs.txt
     if [ -d "$ARQV" ]; then
       echo "Movendo logs pro reconlogs/"
     fi
