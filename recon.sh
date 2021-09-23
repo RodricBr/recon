@@ -36,7 +36,7 @@ else
   RESP=$(curl --write-out '%{http_code}' --silent --output /dev/null "$1")
   ARQV=$(mkdir -p reconlogs/)
   if [ ! -d "$ARQV" ]; then
-    echo "Arquivo existe"
+    echo "reconlogs/ já existe"
   fi
   # Pega os .JS e joga num arquivo indicando os que estão ativos
   if [[ "${*: -1}" == "G" ]]; then
@@ -59,7 +59,7 @@ else
   elif [ "${*: -1}" '==' "F" ]; then
     check_f
     # Listagem de subdomínios usando findomain-linux
-    findomain-linux --quiet --target https://"$1" | echo -e "URL: $1 - Status: $RESP" | anew >> reconlogs/"$1"-findomain-subs.txt #https://"$1" >> reconlogs/"$1"-findomain-subs.txt
+    findomain-linux --quiet --target https://"$1" | echo -e "URL: $1 - Status: $RESP" >> reconlogs/"$1"-findomain-subs.txt | anew >> reconlogs/"$1"-findomain-subs.txt #https://"$1" >> reconlogs/"$1"-findomain-subs.txt
     if [ -d "$ARQV" ]; then
       echo "Movendo logs pro reconlogs/"
     fi
