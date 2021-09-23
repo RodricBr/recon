@@ -1,4 +1,7 @@
 # recon
+[!] gau ta com problema não executa <br>
+[V] gospider funcionando lindamente <br>
+[V] findomain funcionando lindamente <br> <br>
 shell script recon for bug bounty; <br>
 getjs <br>
 gau <br>
