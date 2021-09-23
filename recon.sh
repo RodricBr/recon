@@ -1,8 +1,8 @@
 #!/usr/bin/bash
 
 check_g(){
-  if [[ -n $(command -v gau) ]]; then
-    echo -e "${VERDE}Gau instalado!${FIM}"
+  if [[ -n $(command -v gau) ]] || [[ -n $(command -v httpx) ]]; then
+    echo -e "${VERDE}Gau e HttpX instalado!${FIM}"
     echo -e "${VERDE}Versão:${FIM} $(gau --version)"
   else
     echo -e "${VERMELHO}Gau não encontrado!${FIM}"
@@ -40,35 +40,27 @@ else
   # Pega os .JS e joga num arquivo indicando os que estão ativos
   if [[ "${*: -1}" == "G" ]]; then
     check_g
-    gau_(){
-      # Pega os .JS e joga num arquivo indicando os que estão ativos
-      gau -subs "$1" | grep -iE '\.js'| grep -iEv '(\.jsp|\.json)' >> reconlogs/"$1"-js.txt ; cat reconlogs/"$1"-js.txt | anti-burl | awk '{print $4}' | sort -u >> reconlogs/"$1"-ativos.txt
-      if [ -d "$ARQ" ]; then
-        echo "Movendo logs pro reconlogs/"
-      fi
-    }
-    gau_
+    # Pega os .JS e joga num arquivo indicando os que estão ativos
+    gau -subs "$1" | grep -iE '\.js'| grep -iEv '(\.jsp|\.json)' >> reconlogs/"$1"-js.txt ; cat reconlogs/"$1"-js.txt | httpx -status-code -no-colors | sort -u >> reconlogs/"$1"-ativos.txt # anti-burl | awk...
+    if [ -d "$ARQ" ]; then
+      echo "Movendo logs pro reconlogs/"
+    fi
     exit 0
   elif [ "${*: -1}" '==' "O" ]; then # *: -1 == último caractere
     check_o
-    gospider_(){
-      # Listagem de subdomínios usando anubis
-      gospider -q -s "https://$1" | awk NF | anew >> reconlogs/"$1"-spider-subs.txt
-      if [ -d "$ARQ" ]; then
-        echo "Movendo logs pro reconlogs/"
-      fi
-    }
+    # Listagem de subdomínios usando anubis
+    gospider -q -s "https://$1" | awk NF | anew >> reconlogs/"$1"-spider-subs.txt
+    if [ -d "$ARQ" ]; then
+      echo "Movendo logs pro reconlogs/"
+    fi
     exit 0
   elif [ "${*: -1}" '==' "F" ]; then
     check_f
-    find_(){
-      # Listagem de subdomínios usando findomain-linux
-      findomain-linux --quiet --target http[s]?://$1 | anew >> reconlogs/"$1"-findomain-subs.txt #https://"$1" >> reconlogs/"$1"-findomain-subs.txt
-      if [ -d "$ARQ" ]; then
-        echo "Movendo logs pro reconlogs/"
-      fi
-    }
-    find_
+    # Listagem de subdomínios usando findomain-linux
+    findomain-linux --quiet --target "http[s]?://$1" | anew >> reconlogs/"$1"-findomain-subs.txt #https://"$1" >> reconlogs/"$1"-findomain-subs.txt
+    if [ -d "$ARQ" ]; then
+      echo "Movendo logs pro reconlogs/"
+    fi
     exit 0
     #subfinder
   fi
