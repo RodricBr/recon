@@ -1,9 +1,8 @@
-#!/usr/bin/env bash
-
 #!/usr/bin/bash
 
 if [[ -z "$@" ]]; then
-  echo -e "Uso: $0 <URL sem http> F / O / G"
+  echo -e "Uso: $0 <URL sem http> [F] ou [O] ou [G]"
+  echo -e "F  :: Findomain\nO  :: Gospider\nG  :: Gau"
 else
   #if [[ -n $(command -v gau -h) ]]; then
   #    echo -e "${VERDE}Gau instalado!${FIM}"
@@ -22,11 +21,11 @@ else
     exit 0
   elif [ "${*: -1}" '==' "O" ]; then # *: -1 == último caractere
     # Listagem de subdomínios usando anubis
-    gospider -q -s "https://$1" | awk NF >> "$1"-subs.txt
+    gospider -q -s "https://$1" | awk NF >> "$1"-spider-subs.txt
     exit 0
   elif [ "${*: -1}" '==' "F" ]; then
     # Listagem de subdomínios usando findomain-linux
-    findomain-linux --quiet --target https://"$1"
+    findomain-linux --quiet --target https://"$1" >> "$1"-findomain-subs.txt"
     exit 0
   fi
 
