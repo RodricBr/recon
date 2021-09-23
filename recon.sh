@@ -33,16 +33,18 @@ if [[ -z "$@" ]] || [[ "$@" == "-h" ]]; then
 else
   echo -e "Executando comandos, aguarde por favor!\n\
   Isso pode levar alguns minutos!"
-  ARQ=$(mkdir -p reconlogs/)
-  if [ ! -d "$ARQ" ]; then
+  RESP=$(curl --write-out '%{http_code}' --silent --output /dev/null "$1")
+  ARQV=$(mkdir -p reconlogs/)
+  if [ ! -d "$ARQV" ]; then
     echo "Arquivo existe"
   fi
   # Pega os .JS e joga num arquivo indicando os que estão ativos
   if [[ "${*: -1}" == "G" ]]; then
     check_g
     # Pega os .JS e joga num arquivo indicando os que estão ativos
-    gau -subs "$1" | grep -iE '\.js'| grep -iEv '(\.jsp|\.json)' >> reconlogs/"$1"-js.txt ; cat reconlogs/"$1"-js.txt | httpx -status-code -no-colors | sort -u >> reconlogs/"$1"-ativos.txt # anti-burl | awk...
-    if [ -d "$ARQ" ]; then
+    #gau -subs https://"$1" | grep -iE '\.js'| grep -iEv '(\.jsp|\.json)' >> reconlogs/"$1"-js.txt ; cat reconlogs/"$1"-js.txt | httpx -status-code -no-colors | sort -u >> reconlogs/"$1"-ativos.txt # anti-burl | awk...
+    echo "$1" | httpx -status-code -no-color | sort -u >> reconlogs/"$1"-ativos.txt
+    if [ -d "$ARQV" ]; then
       echo "Movendo logs pro reconlogs/"
     fi
     exit 0
@@ -50,15 +52,15 @@ else
     check_o
     # Listagem de subdomínios usando anubis
     gospider -q -s "https://$1" | awk NF | anew >> reconlogs/"$1"-spider-subs.txt
-    if [ -d "$ARQ" ]; then
+    if [ -d "$ARQV" ]; then
       echo "Movendo logs pro reconlogs/"
     fi
     exit 0
   elif [ "${*: -1}" '==' "F" ]; then
     check_f
     # Listagem de subdomínios usando findomain-linux
-    findomain-linux --quiet --target "http[s]?://$1" | anew >> reconlogs/"$1"-findomain-subs.txt #https://"$1" >> reconlogs/"$1"-findomain-subs.txt
-    if [ -d "$ARQ" ]; then
+    findomain-linux --quiet --target https://"$1" | echo -e "URL: $1 - Status: $RESP" | anew >> reconlogs/"$1"-findomain-subs.txt #https://"$1" >> reconlogs/"$1"-findomain-subs.txt
+    if [ -d "$ARQV" ]; then
       echo "Movendo logs pro reconlogs/"
     fi
     exit 0
