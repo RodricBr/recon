@@ -22,9 +22,9 @@ import time
 
 
 path = os.getenv("HOME")
-print(path)
-if not os.geteuid() == 0:
-    sys.exit("""\033[1;91m\n[!] Need to be root my friend. ¯\_(ツ)_/¯\n\033[1;m""")
+#print(path)
+#if not os.geteuid() == 0:
+    #sys.exit("""\033[1;91m\n[!] Need to be root my friend. ¯\_(ツ)_/¯\n\033[1;m""")
 
 exitmsg = "\nShutting Down o/\n"
  #  cmd_target = os.popen("bash -c 'finalrecon --sub
@@ -32,12 +32,12 @@ def start():
     print("[0] Processing...")
     print("ReconTracer Started!")
     print("""\033[31m
-    __________                         ___________                                 
-\______   \ ____   ____  ____   ___\__    ___/___________    ____  ___________ 
- |       _// __ \_/ ___\/  _ \ /    \|    |  \_  __ \__  \ _/ ___\/ __ \_  __ \
- |    |   \  ___/\  \__(  <_> )   |  \    |   |  | \// __ \\  \__\  ___/|  | \/
- |____|_  /\___  >\___  >____/|___|  /____|   |__|  (____  /\___  >___  >__|   
-        \/     \/     \/           \/                    \/     \/    \/   
+    ____                      ______                         
+   / __ \___  _________  ____/_  __/________ _________  _____
+  / /_/ / _ \/ ___/ __ \/ __ \/ / / ___/ __ `/ ___/ _ \/ ___/
+ / _, _/  __/ /__/ /_/ / / / / / / /  / /_/ / /__/  __/ /    
+/_/ |_|\___/\___/\____/_/ /_/_/ /_/   \__,_/\___/\___/_/  
+
     """)
     print("Made by --> Ferreira\n")
     print("Github --> https://github.com/ferreiraklet")
@@ -46,11 +46,13 @@ def start():
 
 def full_reconize():
     #if not
-    if sys.argv[1] == False:
-        print(f"YOu need to pass a url {exitmsg}, type -h for help!")
+    exitmsg = "\nShutting Down o/\n"
+    if len(sys.argv) <= 1:
+        print(f"\nUsage: You need to pass a url {exitmsg}")
+        sys.exit()
 
-    if sys.argv[1] == "-h":
-        print("To use ReconTracer, just type recontracer + domain\n The files are saved in /home/user/recontracer/recontracer.txt")
+    if sys.argv[1].startswith("-h") == True:
+        print("To use ReconTracer just type recontracer + domain, The files are saved in /home/user/recontracer/recontracer.txt")
         sys.exit()
 
     if sys.argv[1].endswith('/') == True:
@@ -63,13 +65,14 @@ def full_reconize():
     else:
         try:
             print("Starting Recon...")
-            finalrecon_input = str(input("Please, put your finalrecon directory here without /finalrecon.py --> example: /home/finalrecon: "))
+            finalrecon_input = str(input("Please, put your finalrecon directory here without /finalrecon.py --> example: /home/finalrecon:"))
             if os.path.exists(f"{path}/Desktop/recontracerscans"):
-                print("[] - Patching up things...")
+                print("[0] - Patching up things...")
             else:
-                os.popen(f"cd {path}/Desktop && touch recontracerscans")
-            finalrecon = os.popen(f"python3 {finalrecon_input}/finalrecon.py " + sys.argv[1] + "--sub ").read()
-            f = open(r'{path}/Desktop/recontracerscans/recon.txt','w')
+                os.popen(f"cd {path}/Desktop && mkdir recontracerscans")
+            finalrecon = os.popen(f"python3 {finalrecon_input.strip()}/finalrecon.py " + sys.argv[1] + " --sub").read().replace("[32m","").replace("[33m","").replace("[36m","").replace("[32m[+]","").replace("","").replace("[+]","").replace("[+]", "")
+            #finalrecon = os.popen(f"python3 {finalrecon_input}/finalrecon.py " + sys.argv[1] + " --sub").read()
+            f = open(f'{path}/Desktop/recontracerscans/recon.txt','w+')
             f.write(finalrecon)
             f.close()
             print("First Recon Saved with sucess!")
@@ -142,26 +145,63 @@ def full_reconize():
                               ~vXXXXXXXXXXXXXXXXv~
                                  '~VvXXXXXXXV~~
                                     ~~""")
-            assetfinder = os.popen("assetfinder " + sys.argv[1]).read()
-            with open(r'{path}/Desktop/recontracerscans/recon.txt','a') as f:  
-                f.write(assetfinder)
-            findomain = os.popen("findomain-linux -q -t " + sys.argv[1]).read()
-            with open(r'{path}/Desktop/recontracerscans/recon.txt','a') as f:  
-                f.write(findomain)
-            subfinder = os.popen("subfinder -silent -d " + sys.argv[1]).read()
-            with open(r'{path}/Desktop/recontracerscans/recon.txt','a') as f:  
-                f.write(subfinder)
-            cat()
+
+            assetfinder_scan()
+
+            findomain_scan()
+
+            subfinder_scan()
+
+
+            #cat()
         except KeyboardInterrupt:
             print(exitmsg)
             sys.exit()
         except:
-            print("Command not found! Make sure you downloaded with go get -u!")
+            print("Something went wrong! Probably a command was not found! Make sure you downloaded with go get -u! Also check if anew is working well!")
             sys.exit()
+    
+def assetfinder_scan():
+    pathi = os.getenv("HOME")
+    assetfinder = os.popen("assetfinder " + sys.argv[1]).read()
+    print(assetfinder)
+    with open(f'{pathi}/Desktop/recontracerscans/recon.txt','a') as f:  
+        f.write(assetfinder)
+
+def findomain_scan():
+    """pathi = os.getenv("HOME")
+    findomain = os.popen("findomain -t " + sys.argv[1]) + " -q".read()
+    with open(r'{pathi}/Desktop/recontracerscans/recon.txt','a') as f:  
+        f.write(findomain)"""
+    try:
+        findomain = os.popen("findomain-linux -q -t " + sys.argv[1]).read()
+        with open(r'{pathi}/Desktop/recontracerscans/recon.txt','a') as f:  
+            f.write(findomain)
+    except:
+        pathi = os.getenv("HOME")
+    findomain = os.popen("findomain -t " + sys.argv[1]) + " -q".read()
+    with open(r'{pathi}/Desktop/recontracerscans/recon.txt','a') as f:  
+        f.write(findomain)
+
+def subfinder_scan():
+    if sys.argv[1].startswith("https://") == True:
+        subfinder = os.popen("subfinder -silent -d " + sys.argv[1].replace("https://", "")).read()
+        with open(f'{path}/Desktop/recontracerscans/recon.txt','a') as f:  
+            f.write(subfinder)
+    elif sys.argv[1].startswith("http://") == True:
+        subfinder = os.popen("subfinder -silent -d " + sys.argv[1].replace("http://", "")).read()
+        with open(f'{path}/Desktop/recontracerscans/recon.txt','a') as f:  
+            f.write(subfinder)
+
+
 def cat():
     print("[] --> Organizing things...")
     os.popen(f"cat {path}/Desktop/recontracerscans/scans.txt | anew scans.txt")
 
+def exiting():
+    print(exitmsg + " Exiting... Thank You!")
+
 if __name__ == '__main__':
     start()
     full_reconize()
+
