@@ -12,7 +12,7 @@ check_g(){
 check_o(){
   if [[ -n $(command -v gospider) ]]; then
     echo -e "${VERDE}Gospider instalado!${FIM}"
-    echo -e "${VERDE}Versão:${FIM} $(gospider --version | tail -n 1)"
+    echo -e "${VERDE}Versão:${FIM} $(gospider --version | head -n 1)"
   else
     echo -e "${VERMELHO}Gospider não encontrado!${FIM}"
   fi
