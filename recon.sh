@@ -1,6 +1,6 @@
 #!/usr/bin/bash
 
-if [[ -z "$@" ]]; then
+if [[ -z "$@" ]] || [[ "$@" == "-h" ]]; then
   echo -e "Uso: $0 <URL sem http> [F] ou [O] ou [G]"
   echo -e "F  :: Findomain\nO  :: Gospider\nG  :: Gau"
 else
@@ -36,3 +36,5 @@ else
   #fi
   exit 0
 fi
+
+#
