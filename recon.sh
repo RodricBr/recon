@@ -25,7 +25,7 @@ else
     exit 0
   elif [ "${*: -1}" '==' "F" ]; then
     # Listagem de subdomínios usando findomain-linux
-    findomain-linux --quiet --target https://"$1" >> "$1"-findomain-subs.txt"
+    findomain-linux --quiet --target https://"$1" >> "$1"-findomain-subs.txt
     exit 0
   fi
 
