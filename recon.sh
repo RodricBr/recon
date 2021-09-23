@@ -1,28 +1,30 @@
+#!/usr/bin/env bash
+
 #!/usr/bin/bash
 
 if [[ -z "$@" ]]; then
-  echo -e "Uso: $0 <URL sem http>"
+  echo -e "Uso: $0 <URL sem http> F / O / G"
 else
-  if [[ -n $(command -v gau -h) ]]; then
-      echo -e "${VERDE}Gau instalado!${FIM}"
-      echo -e "${VERDE}Versão:${FIM} $(gau --version)"
-      exit 0
-  else
-      echo -e "${VERMELHO}Gau não encontrado!${FIM}"
-      exit 1
-  fi
+  #if [[ -n $(command -v gau -h) ]]; then
+  #    echo -e "${VERDE}Gau instalado!${FIM}"
+  #    echo -e "${VERDE}Versão:${FIM} $(gau --version)"
+  #    exit 0
+  #else
+  #    echo -e "${VERMELHO}Gau não encontrado!${FIM}"
+  #    exit 1
+  #fi
   echo -e "Executando comandos, aguarde por favor!\n\
   Isso pode levar alguns minutos!"
   # Pega os .JS e joga num arquivo indicando os que estão ativos
-  if [[ "$*" == "-G" ]]; then
+  if [[ "${*: -1}" == "G" ]]; then
     # Pega os .JS e joga num arquivo indicando os que estão ativos
     gau -subs "$1" | grep -iE '\.js'| grep -iEv '(\.jsp|\.json)' >> "$1"-js.txt ; cat "$1"-js.txt | anti-burl | awk '{print $4}' | sort -u >> "$1"-ativos.txt
     exit 0
-  elif [ "$*" == "-O" ]; then # *: -1 == último caractere
+  elif [ "${*: -1}" '==' "O" ]; then # *: -1 == último caractere
     # Listagem de subdomínios usando anubis
     gospider -q -s "https://$1" | awk NF >> "$1"-subs.txt
     exit 0
-  elif [ "$*" == "-F" ]; then
+  elif [ "${*: -1}" '==' "F" ]; then
     # Listagem de subdomínios usando findomain-linux
     findomain-linux --quiet --target https://"$1"
     exit 0
