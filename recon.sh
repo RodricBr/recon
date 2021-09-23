@@ -33,22 +33,29 @@ if [[ -z "$@" ]] || [[ "$@" == "-h" ]]; then
 else
   echo -e "Executando comandos, aguarde por favor!\n\
   Isso pode levar alguns minutos!"
+  mkdir reconlogs/
   # Pega os .JS e joga num arquivo indicando os que estão ativos
   if [[ "${*: -1}" == "G" ]]; then
     check_g
     # Pega os .JS e joga num arquivo indicando os que estão ativos
-    gau -subs "$1" | grep -iE '\.js'| grep -iEv '(\.jsp|\.json)' >> "$1"-js.txt ; cat "$1"-js.txt | anti-burl | awk '{print $4}' | sort -u >> "$1"-ativos.txt
+    gau -subs "$1" | grep -iE '\.js'| grep -iEv '(\.jsp|\.json)' >> reconlogs/"$1"-js.txt ; cat reconlogs/"$1"-js.txt | anti-burl | awk '{print $4}' | sort -u >> reconlogs/"$1"-ativos.txt
+    #if [[  ]]; then
+    #  echo "a"
+    #else
+    #  echo "b"
+    #fi
     exit 0
   elif [ "${*: -1}" '==' "O" ]; then # *: -1 == último caractere
     check_o
     # Listagem de subdomínios usando anubis
-    gospider -q -s "https://$1" | awk NF >> "$1"-spider-subs.txt
+    gospider -q -s "https://$1" | awk NF | anew >> reconlogs/"$1"-spider-subs.txt
     exit 0
   elif [ "${*: -1}" '==' "F" ]; then
     check_f
     # Listagem de subdomínios usando findomain-linux
-    findomain-linux --quiet --target https://"$1" >> "$1"-findomain-subs.txt
+    findomain-linux --quiet --target "http[s]?:\/\/$1" | anew >> reconlogs/"$1"-findomain-subs.txt #https://"$1" >> reconlogs/"$1"-findomain-subs.txt
     exit 0
+    #subfinder
   fi
 
   #if [[ "$?" == 0 ]]; then
