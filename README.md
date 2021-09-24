@@ -5,8 +5,8 @@
 
 ```markdown
 ### Para fazer:
-findomain: dentro do .txt --> URL: url -- Status Code: curl --write-out '%{http_code}' --silent --output /dev/null "$1"
-                                                       curl -IL --silent example.com | grep HTTP
+findomain: dentro do .txt --> URL: **url** -- Status Code: **curl --write-out '%{http_code}' --silent --output /dev/null "$1"**
+                                                       **curl -IL --silent example.com | grep HTTP**
 ```
 
 shell script recon for bug bounty; <br>
