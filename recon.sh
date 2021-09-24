@@ -41,7 +41,7 @@ else
   if [ -d "$ARQV" ]; then
     echo "O diretório 'reconlogs/' já existe"
   else
-    echo "O diretório não existe, criando..."
+    echo "O diretório 'reconlogs/' não existe, criando..."
   fi
   # Pega os .JS e joga num arquivo indicando os que estão ativos
   if [[ "${*: -1}" == "G" ]]; then
@@ -50,18 +50,12 @@ else
     # Pega os .JS e joga num arquivo indicando os que estão ativos
     #gau -subs https://"$1" | grep -iE '\.js'| grep -iEv '(\.jsp|\.json)' >> reconlogs/"$1"-js.txt ; cat reconlogs/"$1"-js.txt | httpx -status-code -no-colors | sort -u >> reconlogs/"$1"-ativos.txt # anti-burl | awk...
     echo "$1" | httpx -status-code -no-color | sort -u >> reconlogs/"$1"-ativos.txt
-    if [ -d "$ARQV" ]; then
-      echo "Movendo logs pro reconlogs/"
-    fi
     exit 0
   elif [ "${*: -1}" '==' "O" ]; then # *: -1 == último caractere
     check_o
     msg_
     # Listagem de subdomínios usando anubis
     gospider -q -s "https://$1" | awk NF | anew >> reconlogs/"$1"-spider-subs.txt
-    if [ -d "$ARQV" ]; then
-      echo "Movendo logs pro reconlogs/"
-    fi
     exit 0
   elif [ "${*: -1}" '==' "F" ]; then
     check_f
@@ -69,9 +63,6 @@ else
     # Listagem de subdomínios usando findomain-linux
     findomain-linux --quiet --target https://"$1" >> reconlogs/"$1"-findomain-subs.txt | anew >> reconlogs/"$1"-findomain-subs.txt  #https://"$1" >> reconlogs/"$1"-findomain-subs.txt
     echo -e "Quantidade de URLs:" $(wc -l reconlogs/"$1"-findomain-subs.txt | awk '{print $1}' )
-    if [ -d "$ARQV" ]; then
-      echo "Movendo logs pro reconlogs/"
-    fi
     exit 0
     #subfinder
   fi
