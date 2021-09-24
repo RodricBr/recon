@@ -2,7 +2,7 @@
 
 msg_(){
   echo -e "Executando comandos, aguarde por favor!\n\
-  Isso pode levar alguns minutos!"
+  Isso pode levar alguns minutos!\n"
 }
 
 check_g(){
@@ -17,7 +17,7 @@ check_g(){
 check_o(){
   if [[ -n $(command -v gospider) ]]; then
     echo -e "${VERDE}Gospider instalado!${FIM}"
-    echo -e "${VERDE}Versão:${FIM} $(gospider --version | head -n 1)"
+    echo -e "${VERDE}Versão:${FIM} $(gospider --version | head -n 1)\n"
   else
     echo -e "${VERMELHO}Gospider não encontrado!${FIM}"
   fi
@@ -26,7 +26,7 @@ check_o(){
 check_f(){
   if [[ -n $(command -v findomain-linux) ]]; then
     echo -e "${VERDE}Findomain instalado!${FIM}"
-    echo -e "${VERDE}Versão:${FIM} $(findomain-linux --version)"
+    echo -e "${VERDE}Versão:${FIM} $(findomain-linux --version)\n"
   else
     echo -e "${VERMELHO}Findomain não encontrado!${FIM}"
   fi
@@ -38,8 +38,10 @@ if [[ -z "$@" ]] || [[ "$@" == "-h" ]]; then
 else
   RESP=$(curl --write-out '%{http_code}' --silent --output /dev/null "$1")
   ARQV=$(mkdir -p reconlogs/)
-  if [ ! -d "$ARQV" ]; then
+  if [ -d "$ARQV" ]; then
     echo "O diretório 'reconlogs/' já existe"
+  else
+    echo "O diretório não existe, criando..."
   fi
   # Pega os .JS e joga num arquivo indicando os que estão ativos
   if [[ "${*: -1}" == "G" ]]; then
