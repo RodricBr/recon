@@ -1,5 +1,10 @@
 #!/usr/bin/bash
 
+msg_(){
+  echo -e "Executando comandos, aguarde por favor!\n\
+  Isso pode levar alguns minutos!"
+}
+
 check_g(){
   if [[ -n $(command -v gau) ]] || [[ -n $(command -v httpx) ]]; then
     echo -e "${VERDE}Gau e HttpX instalado!${FIM}"
@@ -31,12 +36,10 @@ if [[ -z "$@" ]] || [[ "$@" == "-h" ]]; then
   echo -e "Uso: $0 <URL sem http> [F] ou [O] ou [G]"
   echo -e "F  :: Findomain\nO  :: Gospider\nG  :: Gau"
 else
-  echo -e "Executando comandos, aguarde por favor!\n\
-  Isso pode levar alguns minutos!"
   RESP=$(curl --write-out '%{http_code}' --silent --output /dev/null "$1")
   ARQV=$(mkdir -p reconlogs/)
   if [ ! -d "$ARQV" ]; then
-    echo "reconlogs/ já existe"
+    echo "Ó diretório 'reconlogs/' já existe"
   fi
   # Pega os .JS e joga num arquivo indicando os que estão ativos
   if [[ "${*: -1}" == "G" ]]; then
@@ -47,6 +50,7 @@ else
     if [ -d "$ARQV" ]; then
       echo "Movendo logs pro reconlogs/"
     fi
+    msg_
     exit 0
   elif [ "${*: -1}" '==' "O" ]; then # *: -1 == último caractere
     check_o
@@ -55,14 +59,17 @@ else
     if [ -d "$ARQV" ]; then
       echo "Movendo logs pro reconlogs/"
     fi
+    msg_
     exit 0
   elif [ "${*: -1}" '==' "F" ]; then
     check_f
     # Listagem de subdomínios usando findomain-linux
-    CMD_='findomain-linux --quiet --target https://"$1"' | echo -e "URL: $CMD_ - Status: $RESP" &>/dev/null >> reconlogs/"$1"-findomain-subs.txt | anew >> reconlogs/"$1"-findomain-subs.txt #https://"$1" >> reconlogs/"$1"-findomain-subs.txt
+    findomain-linux --quiet --target https://"$1" >> reconlogs/"$1"-findomain-subs.txt | anew >> reconlogs/"$1"-findomain-subs.txt  #https://"$1" >> reconlogs/"$1"-findomain-subs.txt
+    echo -e "Quantidade de URLs:" $(wc -l reconlogs/"$1"-findomain-subs.txt | awk '{print $1}' )
     if [ -d "$ARQV" ]; then
       echo "Movendo logs pro reconlogs/"
     fi
+    msg_
     exit 0
     #subfinder
   fi
