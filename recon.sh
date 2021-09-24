@@ -38,13 +38,19 @@ if [[ -z "$@" ]] || [[ "$@" == "-h" ]]; then
 else
   RESP=$(curl --write-out '%{http_code}' --silent --output /dev/null "$1")
   ARQV=$(mkdir -p reconlogs/)
+  DIR_="reconlogs/"
+  if [[ ! -e $DIR_ ]]; then
+    mkdir $DIR_
+  elif [[ ! -d $DIR_ ]]; then
+    echo "$DIR_ já existe" 1>&2
+  fi
   # Pega os .JS e joga num arquivo indicando os que estão ativos
   if [[ "${*: -1}" == "G" ]]; then
     check_g
     msg_
     # Pega os .JS e joga num arquivo indicando os que estão ativos
     #gau -subs https://"$1" | grep -iE '\.js'| grep -iEv '(\.jsp|\.json)' >> reconlogs/"$1"-js.txt ; cat reconlogs/"$1"-js.txt | httpx -status-code -no-colors | sort -u >> reconlogs/"$1"-ativos.txt # anti-burl | awk...
-    echo "$1" | httpx -status-code -no-color | sort -u >> reconlogs/"$1"-ativos.txt
+    gau -subs "$1" >> "$1"-200.txt | curl --write-out '%{http_code}' --silent --output /dev/null "!:2" | sort -u >> reconlogs/"$1"-ativos.txt
     exit 0
   elif [ "${*: -1}" '==' "O" ]; then # *: -1 == último caractere
     check_o
