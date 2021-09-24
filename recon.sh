@@ -38,11 +38,6 @@ if [[ -z "$@" ]] || [[ "$@" == "-h" ]]; then
 else
   RESP=$(curl --write-out '%{http_code}' --silent --output /dev/null "$1")
   ARQV=$(mkdir -p reconlogs/)
-  if [ -d "$ARQV" ]; then
-    echo "O diretório 'reconlogs/' já existe"
-  else
-    echo "O diretório 'reconlogs/' não existe, criando..."
-  fi
   # Pega os .JS e joga num arquivo indicando os que estão ativos
   if [[ "${*: -1}" == "G" ]]; then
     check_g
