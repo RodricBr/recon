@@ -1,5 +1,5 @@
 # recon
-[ ! ] gau ta com problema não executa, sem output nos arquivos .txt <br>
+[V] gau funcionando lindamente <br>
 [V] gospider funcionando lindamente <br>
 [V] findomain funcionando lindamente <br> <br>
 
