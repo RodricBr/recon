@@ -18,11 +18,12 @@ site.com/1337.js
 
 URL: fake.com CODE: 302
 .JS:
-fake.com/.js
-fake.com/hax.js
+  fake.com/.js
+  fake.com/hax.js
 URL: fake.com CODE: 200
-fake.com/pwned.js
-fake.com/blaaah.js
+.JSON
+  fake.com/pwned.json
+  fake.com/blaaah.json
 ```
 
 shell script recon for bug bounty; <br>
