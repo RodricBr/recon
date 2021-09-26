@@ -7,7 +7,9 @@
 ### Para fazer:
 findomain: dentro do .txt --> URL: url -- Status Code: curl --write-out '%{http_code}' --silent --output /dev/null "$1"
                                                        curl -IL --silent example.com | grep HTTP**
-Depois jogar todas as respostas em um .txt organizado e no talo, ex:
+[V] Feito, deixar mais apresentável e checar se o curl pega todos os sites e retorna o status code ou apenas o argumento do $1
+
+Depois jogar todas as respostas em um .txt organizado e organizado, ex[ideia]:
 
 URL: site.com CODE: 200
 .JS:
