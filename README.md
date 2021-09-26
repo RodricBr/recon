@@ -18,11 +18,13 @@ site.com/1337.js
 
 ###########################
 
-URL: fake.com CODE: 302
-.JS:
+URL: fake.com
+CODE: 302
+.JS
   fake.com/.js
   fake.com/hax.js
-URL: fake.com CODE: 200
+URL: fake.com
+CODE: 200
 .JSON
   fake.com/pwned.json
   fake.com/blaaah.json
