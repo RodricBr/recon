@@ -50,7 +50,16 @@ else
     msg_
     # Pega os .JS e joga num arquivo indicando os que estão ativos
     #gau -subs https://"$1" | grep -iE '\.js'| grep -iEv '(\.jsp|\.json)' >> reconlogs/"$1"-js.txt ; cat reconlogs/"$1"-js.txt | httpx -status-code -no-colors | sort -u >> reconlogs/"$1"-ativos.txt # anti-burl | awk...
-    gau -subs "$1" >> "$1"-200.txt | curl --write-out '%{http_code}' --silent --output /dev/null "!:2" | sort -u >> reconlogs/"$1"-ativos.txt
+    gau -subs "$1" >> "$1"-js.txt | curl --write-out '\n[+] URL: $1 CODE: %{http_code}' --silent --output /dev/null -L "$1" | sort -u >> reconlogs/"$1"-resp200.txt
+    # Fazer um scan de cada url que o gau jogou no "$1"-js.txt e pegar o status code usando curl
+    # não sei se o resultado do curl é apenas do $1 (uma url) ou de todos os urls do js.txt
+    for resposta_gau in {???}; do
+      echo "alguma coisa"
+    done
+    # https://stackoverflow.com/questions/12409519/curl-command-to-repeat-url-request
+
+    # Original e funcional:
+    # gau -subs "$1" >> "$1"-js.txt | curl --write-out '%{http_code}' --silent --output /dev/null "!:2" | sort -u >> reconlogs/"$1"-resp200.txt
     exit 0
   elif [ "${*: -1}" '==' "O" ]; then # *: -1 == último caractere
     check_o
