@@ -8,6 +8,7 @@
 findomain: dentro do .txt --> URL: url -- Status Code: curl --write-out '%{http_code}' --silent --output /dev/null "$1"
                                                        curl -IL --silent example.com | grep HTTP**
 [V] Feito, deixar mais apresentável e checar se o curl pega todos os sites e retorna o status code ou apenas o argumento do $1
+o código ta uma bagunça, talvez usar regex pra organizar a criação de diretórios, dar uma arrumada
 
 ###########################
 
