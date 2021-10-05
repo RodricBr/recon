@@ -3,6 +3,7 @@
 [V] gospider funcionando lindamente <br>
 [V] findomain funcionando lindamente <br> <br>
 
+`./recon.sh -h` <br>
 ```markdown
 ### Para fazer:
 findomain: dentro do .txt --> URL: url -- Status Code: curl --write-out '%{http_code}' --silent --output /dev/null "$1"
